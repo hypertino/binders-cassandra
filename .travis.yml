@@ -2,7 +2,7 @@ language: scala
 scala:
 - 2.12.1
 - 2.11.8
-sudo: false
+sudo: true
 script: $TRAVIS_BUILD_DIR/travis/build.sh
 jdk:
 - oraclejdk8
