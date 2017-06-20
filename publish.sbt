@@ -1,6 +1,5 @@
 // Sonatype repositary publish options
 publishMavenStyle := true
-
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
@@ -10,11 +9,10 @@ publishTo := {
 }
 
 publishArtifact in Test := false
-
 pomIncludeRepository := { _ => false}
 
-pomExtra := {
-  <url>https://github.com/InnovaCo/binders-cassandra</url>
+pomExtra :=
+  <url>https://github.com/hypertino/cassandra-binders</url>
     <licenses>
       <license>
         <name>BSD-style</name>
@@ -23,36 +21,30 @@ pomExtra := {
       </license>
     </licenses>
     <scm>
-      <url>git@github.com:InnovaCo/binders-cassandra.git</url>
-      <connection>scm:git:git@github.com:InnovaCo/binders-cassandra.git</connection>
+      <url>git@github.com:hypertino/cassandra-binders.git</url>
+      <connection>scm:git:git@github.com:hypertino/cassandra-binders.git</connection>
     </scm>
     <developers>
       <developer>
-        <id>InnovaCo</id>
-        <name>Innova Co S.a r.l</name>
-        <url>https://github.com/InnovaCo</url>
-      </developer>
-      <developer>
         <id>maqdev</id>
-        <name>Maga Abdurakhmanov</name>
+        <name>Magomed Abdurakhmanov</name>
         <url>https://github.com/maqdev</url>
       </developer>
+      <developer>
+        <id>hypertino</id>
+        <name>Hypertino</name>
+        <url>https://github.com/hypertino</url>
+      </developer>
     </developers>
-}
 
 // Sonatype credentials
-
 credentials ++= (for {
   username <- Option(System.getenv().get("sonatype_username"))
   password <- Option(System.getenv().get("sonatype_password"))
 } yield Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", username, password)).toSeq
 
 // pgp keys and credentials
-
-pgpSecretRing := file("inn-oss-private.asc")
-
-pgpPublicRing := file("inn-oss-public.asc")
-
-usePgpKeyHex("5DF2525FA9D102B7")
-
+pgpSecretRing := file("./travis/ht-oss-private.asc")
+pgpPublicRing := file("./travis/ht-oss-public.asc")
+usePgpKeyHex("F8CDEF49B0EDEDCC")
 pgpPassphrase := Option(System.getenv().get("oss_gpg_passphrase")).map(_.toCharArray)

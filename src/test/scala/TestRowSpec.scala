@@ -1,16 +1,9 @@
-import com.datastax.driver.core.{DataType, ColumnDefinitions}
-import eu.inn.binders.naming.PlainConverter
-import java.math.BigInteger
-import java.net.InetAddress
-import java.nio.ByteBuffer
-import java.util.{UUID, Date}
+import java.util.Date
+
+import com.hypertino.inflector.naming.PlainConverter
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{FlatSpec, Matchers}
-import eu.inn.binders._
-import org.mockito.Mockito._
-
-import scala.collection.JavaConversions
-import org.mockito.Matchers._
 
 class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMockers {
 
@@ -224,7 +217,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     import scala.collection.JavaConversions._
 
     val cr = row("i1", "i2", "i3")
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
 
     when(cr.isNull("i1")).thenReturn(false)
     when(cr.getList[Int]("i1", classOf[Int])).thenReturn(List(1, 2, 3))
@@ -250,7 +243,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(false)
     when(cr.getSet[Date]("i3", classOf[Date])).thenReturn(Set(yesterday, now))
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
     val t = br.unbind[TestSet]
     assert(t == TestSet(Set(1, 2, 3), Set("1", "2", "3"), Set(yesterday, now)))
   }
@@ -266,7 +259,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i2")).thenReturn(false)
     when(cr.getMap[Long, Date]("i2", classOf[Long], classOf[Date])).thenReturn(Map(0l -> yesterday, 1l -> now))
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
     val t = br.unbind[TestMap]
     assert(t == TestMap(Map(1 -> "11", 2 -> "22"), Map(0l -> yesterday, 1l -> now)))
   }

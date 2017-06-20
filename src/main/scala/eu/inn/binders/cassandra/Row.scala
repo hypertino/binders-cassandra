@@ -4,12 +4,14 @@ import java.math.BigInteger
 import java.net.InetAddress
 import java.nio.ByteBuffer
 import java.util.UUID
+
+import com.hypertino.binders.core.Deserializer
+import com.hypertino.inflector.naming.Converter
+
 import scala.reflect.runtime.universe._
 
-import eu.inn.binders.naming.Converter
 
-
-class Row[C <: Converter : TypeTag](val row: com.datastax.driver.core.Row) extends eu.inn.binders.core.Deserializer[C] {
+class Row[C <: Converter : TypeTag](val row: com.datastax.driver.core.Row) extends Deserializer[C] {
   import scala.reflect._
   import scala.collection.JavaConversions._
 
@@ -21,10 +23,10 @@ class Row[C <: Converter : TypeTag](val row: com.datastax.driver.core.Row) exten
     new FieldDeserializer(column.getName)
   }.toIterator
 
-  class FieldDeserializer(val name: String) extends eu.inn.binders.core.Deserializer[C] {
+  class FieldDeserializer(val name: String) extends Deserializer[C] {
     def fieldName: Option[String] = Some(name)
 
-    def iterator(): Iterator[eu.inn.binders.core.Deserializer[C]] = ???
+    def iterator(): Iterator[Deserializer[C]] = ???
 
     protected def checkNotNull() = if (row.isNull(name)) throw new ColumnValueIsNullException(name)
 

@@ -1,8 +1,8 @@
 import java.util.Date
 
 import com.datastax.driver.core.Session
+import com.hypertino.inflector.naming.LowercaseConverter
 import eu.inn.binders.cassandra._
-import eu.inn.binders.naming.LowercaseConverter
 import org.cassandraunit.CassandraCQLUnit
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet
 import org.scalatest.{BeforeAndAfter, Suite}
@@ -19,7 +19,7 @@ object Cassandra extends CassandraCQLUnit(new ClassPathCQLDataSet("bindersTest.c
 trait SessionFixture extends BeforeAndAfter {
   this: Suite =>
   var session: Session = null
-  implicit var sessionQueryCache: SessionQueryCache[LowercaseConverter] = null
+  implicit var sessionQueryCache: SessionQueryCache[LowercaseConverter.type] = null
 
   val yesterday = {
     import java.util._
@@ -40,7 +40,7 @@ trait SessionFixture extends BeforeAndAfter {
   before {
     Cassandra.start
     session = Cassandra.session
-    sessionQueryCache = new GuavaSessionQueryCache[LowercaseConverter](session)
+    sessionQueryCache = new GuavaSessionQueryCache[LowercaseConverter.type](session)
     createUser(10, "maga", yesterday)
     createUser(11, "alla", yesterday)
   }

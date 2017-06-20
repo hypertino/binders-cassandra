@@ -2,12 +2,21 @@
 set -e
 
 if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
-  if grep version "build.sbt" | grep -q "\-SNAPSHOT"; then
-    sbt ++$TRAVIS_SCALA_VERSION test publish
+  echo "$key_password" | gpg --passphrase-fd 0 ./travis/ht-oss-public.asc.gpg
+  echo "$key_password" | gpg --passphrase-fd 0 ./travis/ht-oss-private.asc.gpg
+
+  if grep "version\s*:=.*SNAPSHOT" build.sbt; then
+    sbt ++$TRAVIS_SCALA_VERSION test publishSigned
   else
-    openssl aes-256-cbc -k "$key_password" -in ./travis/inn-oss-public.enc -out ./inn-oss-public.asc -d
-    openssl aes-256-cbc -k "$key_password" -in ./travis/inn-oss-private.enc -out ./inn-oss-private.asc -d
-    sbt 'set version := version.value + "." + System.getenv("TRAVIS_BUILD_NUMBER")' ++$TRAVIS_SCALA_VERSION test publishSigned sonatypeReleaseAll
+    sbt ++$TRAVIS_SCALA_VERSION test publishSigned
+  	# wait different time for different jobs, due to race condition releasing in sonatype
+  	if [[ "$TRAVIS_JOB_NUMBER" =~ ^[[:digit:]]+\.([[:digit:]]+)$ ]]; then
+  		job_number=${BASH_REMATCH[1]}
+  		wait_time=$(( ($job_number-1)*20 ))
+  		echo "Waiting for job $job_number ($TRAVIS_JOB_NUMBER) for $wait_time seconds..."
+  		sleep $wait_time
+  	fi
+    sbt ++$TRAVIS_SCALA_VERSION sonatypeReleaseAll
   fi
 else
   sbt ++$TRAVIS_SCALA_VERSION test

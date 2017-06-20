@@ -1,12 +1,12 @@
 package eu.inn.binders.cassandra.internal
 
-import scala.concurrent.{Future, ExecutionContext}
+import com.hypertino.inflector.naming.Converter
+
+import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.language.reflectiveCalls
 import scala.reflect.macros.Context
-
-import eu.inn.binders.cassandra.{IfApplied, DynamicQuery, Statement}
-import eu.inn.binders.naming.Converter
+import eu.inn.binders.cassandra.{DynamicQuery, IfApplied, Statement}
 
 
 object CqlMacro {

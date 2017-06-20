@@ -5,7 +5,7 @@ import java.util.concurrent.{Callable, TimeUnit}
 import scala.reflect.runtime.universe._
 import com.datastax.driver.core.Session
 import com.google.common.cache.{Cache, CacheBuilder}
-import eu.inn.binders.naming.Converter
+import com.hypertino.inflector.naming.Converter
 
 trait SessionQueryCache[C <: Converter] {
   def session: Session

@@ -1,13 +1,12 @@
 package eu.inn.binders.cassandra
 
-import scala.concurrent.{Promise, Future}
+import scala.concurrent.{Future, Promise}
 import scala.reflect.runtime.universe._
-
 import com.datastax.driver.core.{Statement ⇒ DriverStatement, _}
 import com.google.common.util.concurrent.{FutureCallback, Futures}
+import com.hypertino.inflector.naming.Converter
 import org.slf4j.LoggerFactory
 
-import eu.inn.binders.naming.Converter
 
 /**
   * statement have to be protected in general

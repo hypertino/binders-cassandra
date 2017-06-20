@@ -1,10 +1,8 @@
 package eu.inn.binders.cassandra
 
 import scala.reflect.runtime.universe._
-
 import com.datastax.driver.core.{BatchStatement ⇒ DriverBatchStatement, Statement ⇒ DriverStatement, _}
-
-import eu.inn.binders.naming.Converter
+import com.hypertino.inflector.naming.Converter
 
 class BatchStatement[C <: Converter : TypeTag](session: Session, val batchType: DriverBatchStatement.Type, statements: DriverStatement *)
   extends AbstractStatement[C, DriverBatchStatement](session, new DriverBatchStatement(batchType)) {

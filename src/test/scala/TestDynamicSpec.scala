@@ -2,7 +2,6 @@ import com.datastax.driver.core.Session
 import eu.inn.binders.cassandra.Dynamic
 import org.scalatest.{FlatSpec, Matchers}
 import eu.inn.binders.cassandra._
-import eu.inn.binders.naming.LowercaseConverter
 import org.scalatest.concurrent.ScalaFutures
 
 import scala.concurrent.ExecutionContext

@@ -2,7 +2,7 @@ package eu.inn.binders.cassandra
 
 import scala.reflect.runtime.universe._
 import com.datastax.driver.core.{BoundStatement, PreparedStatement, Session}
-import eu.inn.binders.naming.Converter
+import com.hypertino.inflector.naming.Converter
 import org.slf4j.LoggerFactory
 
 

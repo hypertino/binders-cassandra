@@ -1,12 +1,13 @@
 language: scala
 scala:
-- 2.11.7
-- 2.10.5
+- 2.12.1
+- 2.11.8
 sudo: false
-env:
-  global:
-  - secure: S689DNc5PYm5aCGwv7v39xvYExHYRIXMZqk/nJKFFTLNlfziUAkF4IkFigCqUNc9t3qdNXMLb2NZQnZKNA33IYKTrbqO+dglnSTaT9MM9UTj5Mv+mHsQ8RbQcwoAUq2eDVsKBJlW7oLpcoPpGeE5CQhj+2WWTJY+K9VNzkS7poE=
-  - secure: uYXWBLRQ80F6wfbocQTb4Rx85IsdlM1uYW7yp7nWPfrskH2ghaUlYyUv+6aeWUBjogSPz4Xp9wRjDwiMez+s+z6MoiGQsuqzanYygWUHyj1tGDwZDpYm/WlxPCgo9ZYYssuf5ubqhl0uEiRHx2hIfPyb7vWTwRx6sXtE+0c5Pu4=
-  - secure: oUG6T6aXEcPoJjAFP13iaMal8X0ExuyviEM+ZU4JRRmuoe5/Bx//YYxpsghTP6PsvzCKNUxPsUoBCFHtrnYUoXShPNaVUwFF5FqazcxqyXV2DTUcry3xLao8CGD52fKW64+pBRuolAL3a9zppJt6GtN5Vtyrp18QwD74S3ZnmDs=
-  - secure: Jzv2cqmd9A1ASHudZprhIzXxmryI5bl1C3zQrg3goJVoeQiqVqvjyiLYSep59buFmlvs1pWl14c+w+2+/q+d/ht8gXJo0HFDy2KFI+Q115pvgDSspd3bDczwcxomQslaSAFaEgJCz5xGLcXycYZFtWnFFtWdkkEDa1YSOCgtjmA=
 script: $TRAVIS_BUILD_DIR/travis/build.sh
+jdk:
+- oraclejdk8
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.ivy2
+  - $HOME/.sbt

@@ -1,13 +1,11 @@
 package eu.inn.binders.cassandra
 
 import scala.reflect.runtime.universe._
-
 import com.datastax.driver.core.ResultSet
+import com.hypertino.binders.core.Deserializer
+import com.hypertino.inflector.naming.Converter
 
-import eu.inn.binders.naming.Converter
-
-
-class Rows[C <: Converter : TypeTag](val resultSet: ResultSet) extends eu.inn.binders.core.Deserializer[C] {
+class Rows[C <: Converter : TypeTag](val resultSet: ResultSet) extends Deserializer[C] {
   import scala.collection.JavaConversions._
 
   def fieldName: Option[String] = None

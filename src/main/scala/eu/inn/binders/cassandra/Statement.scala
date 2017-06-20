@@ -4,15 +4,15 @@ import java.math.BigInteger
 import java.net.InetAddress
 import java.nio.ByteBuffer
 import java.util.{Date, UUID}
+
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
-
 import com.datastax.driver.core.{BoundStatement, Session}
-
-import eu.inn.binders.naming.Converter
+import com.hypertino.binders.core.Serializer
+import com.hypertino.inflector.naming.Converter
 
 class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: BoundStatement)
-  extends AbstractStatement[C, BoundStatement](session, boundStatement) with eu.inn.binders.core.Serializer[C] {
+  extends AbstractStatement[C, BoundStatement](session, boundStatement) with Serializer[C] {
   import scala.collection.JavaConversions._
 
   protected var argIndex = -1
@@ -51,7 +51,7 @@ class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: 
   def writeSet[T: ClassTag](value: Set[T]) = boundStatement.setSet(nextIndex(), value)
   def writeMap[K: ClassTag, V: ClassTag](value: Map[K, V]) = boundStatement.setMap(nextIndex(), value)
 
-  class StatementFieldSerializer(val name: String) extends eu.inn.binders.core.Serializer[C] {
+  class StatementFieldSerializer(val name: String) extends Serializer[C] {
     def fieldName: Option[String] = Some(name)
 
     def getFieldSerializer(fieldName: String): Option[StatementFieldSerializer] = None

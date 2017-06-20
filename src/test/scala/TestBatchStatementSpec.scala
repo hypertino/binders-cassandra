@@ -1,11 +1,11 @@
-import com.datastax.driver.core.{Statement, ResultSetFuture, BatchStatement}
+import com.datastax.driver.core.{BatchStatement, ResultSetFuture, Statement}
+import com.hypertino.inflector.naming.PlainConverter
 import org.mockito.ArgumentMatcher
-import org.scalatest.{BeforeAndAfter, Matchers, FlatSpec}
-
-import eu.inn.binders.naming.PlainConverter
+import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 import eu.inn.binders.cassandra._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
+
 import scala.collection.JavaConversions._
 
 class TestBatchStatementSpec extends FlatSpec with Matchers with CustomMockers with BeforeAndAfter {
@@ -18,7 +18,7 @@ class TestBatchStatementSpec extends FlatSpec with Matchers with CustomMockers w
 
   "BatchStatement" should "create and fill BatchStatement from plain statements" in {
     val statements = Seq(stmt("s1"), stmt("s2"))
-    val br = new eu.inn.binders.cassandra.BatchStatement[PlainConverter](session, BatchStatement.Type.LOGGED, statements: _*)
+    val br = new eu.inn.binders.cassandra.BatchStatement[PlainConverter.type](session, BatchStatement.Type.LOGGED, statements: _*)
     when(session.executeAsync(any(classOf[BatchStatement]))).thenReturn(mock[ResultSetFuture])
     br.execute()
 
@@ -37,7 +37,7 @@ class TestBatchStatementSpec extends FlatSpec with Matchers with CustomMockers w
     val batchStatement = new BatchStatement(BatchStatement.Type.LOGGED)
     batchStatement.addAll(statementsInBatch)
 
-    val br = new eu.inn.binders.cassandra.BatchStatement[PlainConverter](session, BatchStatement.Type.LOGGED, batchStatement +: statements : _*)
+    val br = new eu.inn.binders.cassandra.BatchStatement[PlainConverter.type](session, BatchStatement.Type.LOGGED, batchStatement +: statements : _*)
     when(session.executeAsync(any(classOf[BatchStatement]))).thenReturn(mock[ResultSetFuture])
     br.execute()
 

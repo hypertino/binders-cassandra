@@ -1,12 +1,9 @@
 # binders-cassandra
 
-[![Build Status](https://travis-ci.org/InnovaCo/binders-cassandra.svg?branch=master)](https://travis-ci.org/InnovaCo/binders-cassandra)
+[![Build Status](https://travis-ci.org/hypertino/binders.svg)](https://travis-ci.org/hypertino/cassandra-binders)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.11)
 
-[ Latest Releases ](https://oss.sonatype.org/#nexus-search;gav~eu.inn~binders-cassandra_*~~~)
-
-This is a data binder library for Cassandra written in Scala. Please see more information at [binders library page](https://github.com/InnovaCo/binders)
-
-Cassandra data using [DataStax Java Driver for Cassandra](https://github.com/datastax/java-driver).
+This is a Scala data binder library for Cassandra based upon a [DataStax Java Driver for Cassandra](https://github.com/datastax/java-driver).
 
 ## Example
 
@@ -53,16 +50,6 @@ For the unit tests and sample application working local instance of Cassandra is
 To use library, add this line to the build.sbt file:
 
     libraryDependencies += "eu.inn" %% "binders-cassandra" % "0.2.5"
-
-## Requirements
-
-Currently tested and works with:
-
-* binders-core 0.2.4
-* Cassandra 2.0.1 (corresponding driver with prepared statements)
-* Scala 2.11.2, 2.10.4
-* sbt 0.13
-* guava from google 16.0.1
 
 ## License
 

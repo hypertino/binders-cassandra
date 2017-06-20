@@ -3,11 +3,9 @@ package eu.inn.binders
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.reflect.runtime.universe._
-
 import com.datastax.driver.core.{BatchStatement ⇒ DriverBatchStatement}
-
+import com.hypertino.inflector.naming.Converter
 import eu.inn.binders.cassandra.internal.CqlMacro
-import eu.inn.binders.naming.Converter
 
 
 package object cassandra {
