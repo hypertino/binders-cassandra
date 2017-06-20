@@ -1,6 +1,8 @@
 import com.datastax.driver.core._
+import com.hypertino.binders.cassandra
+import com.hypertino.binders.cassandra.GuavaSessionQueryCache
 import com.hypertino.inflector.naming.{Converter, SnakeCaseToCamelCaseConverter}
-import eu.inn.binders.cassandra._
+import com.hypertino.binders.cassandra._
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.concurrent.Await
@@ -9,10 +11,10 @@ import scala.reflect.runtime.universe._
 
 
 class AlternativeQuery[C <: Converter : TypeTag](session: Session, preparedStatement: PreparedStatement)
-  extends eu.inn.binders.cassandra.Query[C](session, preparedStatement) {
+  extends com.hypertino.binders.cassandra.Query[C](session, preparedStatement) {
   def this(session: Session, queryString: String) = this(session, session.prepare(queryString))
 
-  override def createStatement(): eu.inn.binders.cassandra.Statement[C] = new AlternativeStatement[C](session, new BoundStatement(preparedStatement))
+  override def createStatement(): cassandra.Statement[C] = new AlternativeStatement[C](session, new BoundStatement(preparedStatement))
 }
 
 class AlternativeSessionQueryCache[C <: Converter : TypeTag](session: Session) extends GuavaSessionQueryCache[C](session) {
@@ -20,7 +22,7 @@ class AlternativeSessionQueryCache[C <: Converter : TypeTag](session: Session) e
 }
 
 class AlternativeStatement[C <: Converter : TypeTag](session: Session, boundStatement: BoundStatement)
-  extends eu.inn.binders.cassandra.Statement[C](session, boundStatement) {
+  extends cassandra.Statement[C](session, boundStatement) {
 }
 
 class TestAlternativeSessionQueryCacheSpec extends FlatSpec with Matchers {

@@ -1,4 +1,4 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 import java.math.BigInteger
 import java.net.InetAddress
@@ -12,8 +12,8 @@ import scala.reflect.runtime.universe._
 
 
 class Row[C <: Converter : TypeTag](val row: com.datastax.driver.core.Row) extends Deserializer[C] {
-  import scala.reflect._
   import scala.collection.JavaConversions._
+  import scala.reflect._
 
   def fieldName: Option[String] = None
 

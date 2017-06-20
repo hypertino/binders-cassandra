@@ -1,7 +1,7 @@
 import com.datastax.driver.core.Session
-import eu.inn.binders.cassandra.Dynamic
+import com.hypertino.binders.cassandra.Dynamic
 import org.scalatest.{FlatSpec, Matchers}
-import eu.inn.binders.cassandra._
+import com.hypertino.binders.cassandra._
 import org.scalatest.concurrent.ScalaFutures
 
 import scala.concurrent.ExecutionContext

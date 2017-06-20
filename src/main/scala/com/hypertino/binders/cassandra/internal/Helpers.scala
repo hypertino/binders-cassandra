@@ -1,6 +1,7 @@
-package eu.inn.binders.cassandra.internal
+package com.hypertino.binders.cassandra.internal
 
-import eu.inn.binders.cassandra._
+import com.hypertino.binders.cassandra.{NoRowsSelectedException, Rows}
+import com.hypertino.binders.cassandra._
 
 object Helpers {
   def checkIfApplied[A](rows: Rows[_], objectName: String, unbindFunc:() => Option[A]) : IfApplied[A] = {

@@ -1,7 +1,9 @@
-import eu.inn.binders._
-import eu.inn.binders.cassandra._
-import eu.inn.binders.naming.PlainConverter
-import scala.concurrent.{Future, ExecutionContext}
+import com.hypertino.binders.cassandra.SessionQueryCache
+import com.hypertino.binders._
+import com.hypertino.binders.cassandra._
+import com.hypertino.binders.naming.PlainConverter
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class Db(session: com.datastax.driver.core.Session) {
 

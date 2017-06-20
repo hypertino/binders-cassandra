@@ -1,8 +1,8 @@
 import com.datastax.driver.core.BatchStatement
 import com.hypertino.inflector.naming.{LowercaseConverter, PlainConverter}
-import eu.inn.binders.cassandra.Query
+import com.hypertino.binders.cassandra.Query
 import org.scalatest.{FlatSpec, Matchers}
-import eu.inn.binders._
+import com.hypertino.binders._
 
 class TestQuerySpec extends FlatSpec with Matchers with SessionFixture {
 

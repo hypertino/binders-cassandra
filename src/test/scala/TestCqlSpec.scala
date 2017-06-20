@@ -1,11 +1,12 @@
 import java.util.Date
 
 import scala.util.Random
-
 import com.datastax.driver.core.BatchStatement
-import eu.inn.binders.cassandra._
+import com.hypertino.binders.cassandra.NoRowsSelectedException
+import com.hypertino.binders.cassandra._
 import org.scalatest.{FlatSpec, Matchers}
-import scala.concurrent.{Await, Future, ExecutionContext}
+
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.concurrent.duration._
 
 

@@ -1,4 +1,4 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 case class Dynamic(query: String) extends DynamicQuery {
   override def getDynamicQuery: String = query

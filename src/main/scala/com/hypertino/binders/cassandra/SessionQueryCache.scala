@@ -1,11 +1,12 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 import java.util.concurrent.{Callable, TimeUnit}
 
-import scala.reflect.runtime.universe._
 import com.datastax.driver.core.Session
 import com.google.common.cache.{Cache, CacheBuilder}
 import com.hypertino.inflector.naming.Converter
+
+import scala.reflect.runtime.universe._
 
 trait SessionQueryCache[C <: Converter] {
   def session: Session

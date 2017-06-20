@@ -1,11 +1,12 @@
-package eu.inn.binders
+package com.hypertino.binders
+
+import com.datastax.driver.core.{BatchStatement ⇒ DriverBatchStatement}
+import com.hypertino.binders.cassandra.internal.CqlMacro
+import com.hypertino.inflector.naming.Converter
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.reflect.runtime.universe._
-import com.datastax.driver.core.{BatchStatement ⇒ DriverBatchStatement}
-import com.hypertino.inflector.naming.Converter
-import eu.inn.binders.cassandra.internal.CqlMacro
 
 
 package object cassandra {

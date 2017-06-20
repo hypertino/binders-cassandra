@@ -1,4 +1,4 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 import scala.reflect.runtime.universe._
 import com.datastax.driver.core.{BoundStatement, PreparedStatement, Session}

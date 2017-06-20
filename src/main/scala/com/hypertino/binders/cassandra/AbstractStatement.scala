@@ -1,4 +1,4 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 import scala.concurrent.{Future, Promise}
 import scala.reflect.runtime.universe._

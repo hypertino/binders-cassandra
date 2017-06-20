@@ -1,8 +1,9 @@
 import java.util.Date
 
 import com.datastax.driver.core.Session
+import com.hypertino.binders.cassandra.{GuavaSessionQueryCache, SessionQueryCache}
 import com.hypertino.inflector.naming.LowercaseConverter
-import eu.inn.binders.cassandra._
+import com.hypertino.binders.cassandra._
 import org.cassandraunit.CassandraCQLUnit
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet
 import org.scalatest.{BeforeAndAfter, Suite}

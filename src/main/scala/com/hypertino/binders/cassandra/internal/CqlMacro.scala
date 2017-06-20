@@ -1,19 +1,20 @@
-package eu.inn.binders.cassandra.internal
+package com.hypertino.binders.cassandra.internal
 
+import com.hypertino.binders.cassandra.{DynamicQuery, SessionQueryCache, Statement}
 import com.hypertino.inflector.naming.Converter
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.language.reflectiveCalls
 import scala.reflect.macros.Context
-import eu.inn.binders.cassandra.{DynamicQuery, IfApplied, Statement}
+import com.hypertino.binders.cassandra.{DynamicQuery, IfApplied, Statement}
 
 
 object CqlMacro {
   def cql[C <: Converter : c.WeakTypeTag]
   (c: Context)
     (args: c.Expr[Any]*)
-    (sessionQueryCache: c.Expr[eu.inn.binders.cassandra.SessionQueryCache[C]]): c.Expr[Statement[C]] = {
+    (sessionQueryCache: c.Expr[SessionQueryCache[C]]): c.Expr[Statement[C]] = {
     import c.universe._
 
     // Extract and format CQL query string from StringContext (which is this)
@@ -81,7 +82,7 @@ object CqlMacro {
     val tree = q"""{
       val t = ${c.prefix.tree}
       t.stmt.execute.map { rows =>
-        eu.inn.binders.cassandra.internal.Helpers.checkIfApplied[$tpe](
+        com.hypertino.binders.cassandra.internal.Helpers.checkIfApplied[$tpe](
           rows,
           ${tpe.fullName},
           () => rows.unbind[Seq[$tpe]].headOption

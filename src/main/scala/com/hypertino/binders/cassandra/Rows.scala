@@ -1,9 +1,10 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
-import scala.reflect.runtime.universe._
 import com.datastax.driver.core.ResultSet
 import com.hypertino.binders.core.Deserializer
 import com.hypertino.inflector.naming.Converter
+
+import scala.reflect.runtime.universe._
 
 class Rows[C <: Converter : TypeTag](val resultSet: ResultSet) extends Deserializer[C] {
   import scala.collection.JavaConversions._

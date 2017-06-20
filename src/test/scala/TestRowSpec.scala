@@ -1,5 +1,6 @@
 import java.util.Date
 
+import com.hypertino.binders.cassandra.Row
 import com.hypertino.inflector.naming.PlainConverter
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
@@ -26,7 +27,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getInt("i3")).thenReturn(0)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestInt]
     assert(t == TestInt(10, Some(20), None))
   }
@@ -42,7 +43,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getLong("i3")).thenReturn(0)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestLong]
     assert(t == TestLong(10, Some(20), None))
   }
@@ -60,7 +61,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i4")).thenReturn(false)
     when(cr.getString("i4")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestString]
     assert(t == TestString("10", Some("20"), None, None))
   }
@@ -76,7 +77,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getDate("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestDate]
     assert(t == TestDate(yesterday, Some(now), None))
   }
@@ -92,7 +93,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getBool("i3")).thenReturn(false)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestBoolean]
     assert(t == TestBoolean(true, Some(false), None))
   }
@@ -108,7 +109,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getFloat("i3")).thenReturn(0)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestFloat]
     assert(t == TestFloat(1.0f, Some(2.0f), None))
   }
@@ -124,7 +125,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getDouble("i3")).thenReturn(0)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestDouble]
     assert(t == TestDouble(1.0, Some(2.0), None))
   }
@@ -140,7 +141,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getBytes("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestBytes]
     assert(t == TestBytes(ByteBuffer.wrap(Array[Byte](1, 2, 3)), Some(ByteBuffer.wrap(Array[Byte](5, 6, 7))), None))
   }
@@ -156,7 +157,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getVarint("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestBigInteger]
     assert(t == TestBigInteger(new BigInteger("123"), Some(new BigInteger("567")), None))
   }
@@ -172,7 +173,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getDecimal("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestBigDecimal]
     assert(t == TestBigDecimal(BigDecimal("123"), Some(BigDecimal("567")), None))
   }
@@ -190,7 +191,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getUUID("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestUUID]
     assert(t == TestUUID(uuid1, Some(uuid2), None))
   }
@@ -206,7 +207,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(true)
     when(cr.getInet("i3")).thenReturn(null)
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter](cr)
+    val br = new com.hypertino.binders.cassandra.Row[PlainConverter](cr)
     val t = br.unbind[TestInetAddress]
     assert(t == TestInetAddress(InetAddress.getLocalHost, Some(InetAddress.getLoopbackAddress), None))
   }
@@ -217,7 +218,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     import scala.collection.JavaConversions._
 
     val cr = row("i1", "i2", "i3")
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
+    val br = new Row[PlainConverter.type](cr)
 
     when(cr.isNull("i1")).thenReturn(false)
     when(cr.getList[Int]("i1", classOf[Int])).thenReturn(List(1, 2, 3))
@@ -243,7 +244,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i3")).thenReturn(false)
     when(cr.getSet[Date]("i3", classOf[Date])).thenReturn(Set(yesterday, now))
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
+    val br = new Row[PlainConverter.type](cr)
     val t = br.unbind[TestSet]
     assert(t == TestSet(Set(1, 2, 3), Set("1", "2", "3"), Set(yesterday, now)))
   }
@@ -259,7 +260,7 @@ class TestRowSpec extends FlatSpec with Matchers with MockitoSugar with CustomMo
     when(cr.isNull("i2")).thenReturn(false)
     when(cr.getMap[Long, Date]("i2", classOf[Long], classOf[Date])).thenReturn(Map(0l -> yesterday, 1l -> now))
 
-    val br = new eu.inn.binders.cassandra.Row[PlainConverter.type](cr)
+    val br = new Row[PlainConverter.type](cr)
     val t = br.unbind[TestMap]
     assert(t == TestMap(Map(1 -> "11", 2 -> "22"), Map(0l -> yesterday, 1l -> now)))
   }

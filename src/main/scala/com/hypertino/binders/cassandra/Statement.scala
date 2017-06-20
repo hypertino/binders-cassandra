@@ -1,15 +1,16 @@
-package eu.inn.binders.cassandra
+package com.hypertino.binders.cassandra
 
 import java.math.BigInteger
 import java.net.InetAddress
 import java.nio.ByteBuffer
 import java.util.{Date, UUID}
 
-import scala.reflect.ClassTag
-import scala.reflect.runtime.universe._
 import com.datastax.driver.core.{BoundStatement, Session}
 import com.hypertino.binders.core.Serializer
 import com.hypertino.inflector.naming.Converter
+
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
 
 class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: BoundStatement)
   extends AbstractStatement[C, BoundStatement](session, boundStatement) with Serializer[C] {
