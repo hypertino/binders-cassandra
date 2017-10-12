@@ -1,21 +1,21 @@
 name := "cassandra-binders"
 
-version := "0.2-SNAPSHOT"
+version := "0.3-SNAPSHOT"
 
 organization := "com.hypertino"
 
-scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.12.3", "2.11.11")
 
-crossScalaVersions := Seq("2.12.1", "2.11.8")
+scalaVersion := crossScalaVersions.value.head
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("public")
 )
 
 libraryDependencies ++= Seq(
-  "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.9", // 3.2.0, 3.1.2, 2.1.10.3
+  "com.datastax.cassandra" % "cassandra-driver-core" % "2.1.10.3", // 3.2.0, 3.1.2, 2.1.10.3
   "com.google.guava" % "guava" % "19.0",
-  "com.hypertino" %% "binders" % "1.0-SNAPSHOT",
+  "com.hypertino" %% "binders" % "1.2.0",
   "org.slf4j" % "slf4j-api" % "1.7.22",
   "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test",
   "org.cassandraunit" % "cassandra-unit" % "2.1.3.1" % "test",

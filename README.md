@@ -1,7 +1,8 @@
 # binders-cassandra
 
-[![Build Status](https://travis-ci.org/hypertino/binders.svg)](https://travis-ci.org/hypertino/cassandra-binders)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.11)
+[![Build Status](https://travis-ci.org/hypertino/cassandra-binders.svg)](https://travis-ci.org/hypertino/cassandra-binders)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.hypertino/cassandra-binders_2.12)
+[![Join the chat at https://gitter.im/Hypertino/binders](https://badges.gitter.im/Hypertino/binders.svg)](https://gitter.im/Hypertino/binders?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This is a Scala data binder library for Cassandra based upon a [DataStax Java Driver for Cassandra](https://github.com/datastax/java-driver).
 
@@ -49,7 +50,7 @@ For the unit tests and sample application working local instance of Cassandra is
 
 To use library, add this line to the build.sbt file:
 
-    libraryDependencies += "eu.inn" %% "binders-cassandra" % "0.2.5"
+    libraryDependencies += "com.hypertino" %% "cassandra-binders" % "0.3-SNAPSHOT"
 
 ## License
 
