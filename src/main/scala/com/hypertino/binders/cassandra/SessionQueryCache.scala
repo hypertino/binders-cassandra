@@ -18,7 +18,7 @@ class GuavaSessionQueryCache[C <: Converter : TypeTag](
                                                    protected val cache: Cache[String, Query[C]])
   extends SessionQueryCache[C] {
 
-  def this(aSession: Session, cacheSize: Int = 4096, expireAfterAccessInSeconds: Int = 20*60) = this(
+  def this(aSession: Session, cacheSize: Int = 4096, expireAfterAccessInSeconds: Int = 8 * 3600) = this(
     session = aSession,
     cache = CacheBuilder.newBuilder()
       .expireAfterAccess(expireAfterAccessInSeconds, TimeUnit.SECONDS)
