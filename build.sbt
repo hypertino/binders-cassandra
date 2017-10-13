@@ -1,6 +1,6 @@
 name := "cassandra-binders"
 
-version := "0.3.0"
+version := "0.3-SNAPSHOT"
 
 organization := "com.hypertino"
 
