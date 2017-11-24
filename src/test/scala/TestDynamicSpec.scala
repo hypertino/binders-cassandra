@@ -16,8 +16,7 @@ class TestDynamicSpec extends FlatSpec with Matchers with SessionFixture with Sc
     val d1 = Dynamic("select")
     val d2 = Dynamic("userId,")
     val d3 = Dynamic("name,created")
-    val user = await(cql"$d1 $d2 $d3 from users ${Dynamic("where userid=?")}".bindArgs(11).execute()
-    ).unbind[Seq[User]].head
+    val user = cql"$d1 $d2 $d3 from users ${Dynamic("where userid=?")}".bindArgs(11).task.runAsync.futureValue.unbind[Seq[User]].head
 
     assert(user.userId == 11)
     assert(user.name == "alla")
@@ -25,13 +24,13 @@ class TestDynamicSpec extends FlatSpec with Matchers with SessionFixture with Sc
   }
 
   "cql...execute " should " be able to cache and execute dynamic cql with parameters " in {
-    val user1 = dynamicCql(11).futureValue.head
+    val user1 = dynamicCql(11).runAsync.futureValue.head
 
     assert(user1.userId == 11)
     assert(user1.name == "alla")
     assert(user1.created == yesterday)
 
-    val user2 = dynamicCql(10).futureValue.head
+    val user2 = dynamicCql(10).runAsync.futureValue.head
 
     assert(user2.userId == 10)
     assert(user2.name == "maga")

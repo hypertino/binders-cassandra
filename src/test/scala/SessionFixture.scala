@@ -6,10 +6,8 @@ import com.hypertino.inflector.naming.LowercaseConverter
 import com.hypertino.binders.cassandra._
 import org.cassandraunit.CassandraCQLUnit
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{BeforeAndAfter, Suite}
-
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
 
 object Cassandra extends CassandraCQLUnit(new ClassPathCQLDataSet("bindersTest.cql","binders_test"), null, "127.0.0.1", 9142, 60000) {
   lazy val start = {
@@ -17,10 +15,11 @@ object Cassandra extends CassandraCQLUnit(new ClassPathCQLDataSet("bindersTest.c
   }
 }
 
-trait SessionFixture extends BeforeAndAfter {
+trait SessionFixture extends BeforeAndAfter with ScalaFutures {
   this: Suite =>
   var session: Session = null
   implicit var sessionQueryCache: SessionQueryCache[LowercaseConverter.type] = null
+  implicit val scheduler = monix.execution.Scheduler.Implicits.global
 
   val yesterday = {
     import java.util._
@@ -35,7 +34,7 @@ trait SessionFixture extends BeforeAndAfter {
   }
 
   def createUser(id: Int, name: String, created: Date) = {
-      await(cql"insert into users(userId, name, created) values ($id,$name,$created)".execute())
+      cql"insert into users(userId, name, created) values ($id,$name,$created)".task.runAsync.futureValue
   }
 
   before {
@@ -52,8 +51,4 @@ trait SessionFixture extends BeforeAndAfter {
   }
 
   import scala.reflect.runtime.universe._
-
-  def await[R: TypeTag](r: Future[R]): R = {
-    Await.result(r, 20 seconds)
-  }
 }

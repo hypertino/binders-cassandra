@@ -3,8 +3,9 @@ package com.hypertino.binders
 import com.datastax.driver.core.{BatchStatement ⇒ DriverBatchStatement}
 import com.hypertino.binders.cassandra.internal.CqlMacro
 import com.hypertino.inflector.naming.Converter
+import monix.eval.Task
+import monix.execution.Scheduler
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.reflect.runtime.universe._
 
@@ -16,16 +17,16 @@ package object cassandra {
   }
 
   implicit class StatementOps[S <: AbstractStatement[_, _]](val stmt: S) extends AnyVal {
-    def one[O](implicit executor: ExecutionContext): Future[O] = macro CqlMacro.one[S, O]
+    def one[O](implicit scheduler: Scheduler): Task[O] = macro CqlMacro.one[S, O]
 
-    def oneApplied[O](implicit executor: ExecutionContext): Future[IfApplied[O]] = macro CqlMacro.oneApplied[S, O]
+    def oneApplied[O](implicit scheduler: Scheduler): Task[IfApplied[O]] = macro CqlMacro.oneApplied[S, O]
 
-    def oneOption[O](implicit executor: ExecutionContext): Future[Option[O]] = macro CqlMacro.oneOption[S, O]
+    def oneOption[O](implicit scheduler: Scheduler): Task[Option[O]] = macro CqlMacro.oneOption[S, O]
 
-    def all[O](implicit executor: ExecutionContext): Future[Iterator[O]] = macro CqlMacro.all[S, O]
+    def all[O](implicit scheduler: Scheduler): Task[Iterator[O]] = macro CqlMacro.all[S, O]
   }
 
-  implicit def convertFutureToUnit[R <: Rows[_]](f: Future[R])(implicit executor: ExecutionContext): Future[Unit] = f.map(_ ⇒ {})
+  //implicit def convertFutureToUnit[R <: Rows[_]](f: Future[R])(implicit executor: ExecutionContext): Future[Unit] = f.map(_ ⇒ {})
 
   object Batch {
 

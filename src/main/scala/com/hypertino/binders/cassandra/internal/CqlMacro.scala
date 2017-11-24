@@ -1,13 +1,14 @@
 package com.hypertino.binders.cassandra.internal
 
-import com.hypertino.binders.cassandra.{DynamicQuery, SessionQueryCache, Statement}
+import com.hypertino.binders.cassandra.SessionQueryCache
 import com.hypertino.inflector.naming.Converter
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.language.experimental.macros
 import scala.language.reflectiveCalls
 import scala.reflect.macros.Context
 import com.hypertino.binders.cassandra.{DynamicQuery, IfApplied, Statement}
+import monix.eval.Task
+import monix.execution.Scheduler
 
 
 object CqlMacro {
@@ -59,29 +60,29 @@ object CqlMacro {
 
   def one[S: c.WeakTypeTag, O: c.WeakTypeTag]
   (c: Context)
-    (executor: c.Expr[ExecutionContext]): c.Expr[Future[O]] = {
+    (scheduler: c.Expr[Scheduler]): c.Expr[Task[O]] = {
     import c.universe._
     val tpe = weakTypeOf[O].typeSymbol
     val tree = q"""{
       val t = ${c.prefix.tree}
-      t.stmt.execute.map { rows =>
+      t.stmt.task.map { rows =>
         rows.unbind[Seq[$tpe]].headOption.getOrElse {
           throw new NoRowsSelectedException(${tpe.fullName})
         }
       }
     }"""
     // println(tree)
-    c.Expr[Future[O]](tree)
+    c.Expr[Task[O]](tree)
   }
 
   def oneApplied[S: c.WeakTypeTag, O: c.WeakTypeTag]
   (c: Context)
-  (executor: c.Expr[ExecutionContext]): c.Expr[Future[IfApplied[O]]] = {
+  (scheduler: c.Expr[Scheduler]): c.Expr[Task[IfApplied[O]]] = {
     import c.universe._
     val tpe = weakTypeOf[O].typeSymbol
     val tree = q"""{
       val t = ${c.prefix.tree}
-      t.stmt.execute.map { rows =>
+      t.stmt.task.map { rows =>
         com.hypertino.binders.cassandra.internal.Helpers.checkIfApplied[$tpe](
           rows,
           ${tpe.fullName},
@@ -90,33 +91,33 @@ object CqlMacro {
       }
     }"""
     // println(tree)
-    c.Expr[Future[IfApplied[O]]](tree)
+    c.Expr[Task[IfApplied[O]]](tree)
   }
 
   def oneOption[S: c.WeakTypeTag, O: c.WeakTypeTag]
   (c: Context)
-    (executor: c.Expr[ExecutionContext]): c.Expr[Future[Option[O]]] = {
+  (scheduler: c.Expr[Scheduler]): c.Expr[Task[Option[O]]] = {
     import c.universe._
 
     val tree = q"""{
       val t = ${c.prefix.tree}
-      t.stmt.execute.map(rows => rows.unbind[Seq[${weakTypeOf[O].typeSymbol}]].headOption)
+      t.stmt.task.map(rows => rows.unbind[Seq[${weakTypeOf[O].typeSymbol}]].headOption)
     }"""
     // println(tree)
-    c.Expr[Future[Option[O]]](tree)
+    c.Expr[Task[Option[O]]](tree)
   }
 
   def all[S: c.WeakTypeTag, O: c.WeakTypeTag]
   (c: Context)
-    (executor: c.Expr[ExecutionContext]): c.Expr[Future[Iterator[O]]] = {
+    (scheduler: c.Expr[Scheduler]): c.Expr[Task[Iterator[O]]] = {
     import c.universe._
 
     val tree = q"""{
       val t = ${c.prefix.tree}
-      t.stmt.execute.map(rows => rows.unbind[Iterator[${weakTypeOf[O].typeSymbol}]])
+      t.stmt.task.map(rows => rows.unbind[Iterator[${weakTypeOf[O].typeSymbol}]])
     }"""
     // println(tree)
-    c.Expr[Future[Iterator[O]]](tree)
+    c.Expr[Task[Iterator[O]]](tree)
   }
 
   private def getQueryCode[C <: Converter : c.WeakTypeTag]

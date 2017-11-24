@@ -1,11 +1,15 @@
 package com.hypertino.binders.cassandra
 
-import scala.concurrent.{Future, Promise}
+import java.util.concurrent.CancellationException
+
 import scala.reflect.runtime.universe._
 import com.datastax.driver.core.{Statement ⇒ DriverStatement, _}
-import com.google.common.util.concurrent.{FutureCallback, Futures}
 import com.hypertino.inflector.naming.Converter
+import monix.eval.Task
+import monix.execution.Cancelable
 import org.slf4j.LoggerFactory
+
+import scala.util.{Failure, Success}
 
 
 /**
@@ -15,14 +19,26 @@ abstract class AbstractStatement[C <: Converter : TypeTag, S <: DriverStatement]
 
   protected val logger = LoggerFactory.getLogger(getClass)
 
-  def execute(): Future[Rows[C]] = {
+  def task: Task[Rows[C]] = {
     if (logger.isTraceEnabled) {
       logger.trace(queryString().trim)
     }
 
-    val promise = Promise[Rows[C]]()
-    Futures.addCallback(session.executeAsync(statement), new FutureConverter(promise))
-    promise.future
+    Task.create[Rows[C]] { (scheduler, callback) =>
+      val f = session.executeAsync(statement)
+      val l = new Runnable with Cancelable {
+        def run() = {
+          scala.util.Try(new Rows[C](f.get())) match {
+            case c @ Failure(e : CancellationException) ⇒ // do nothing if canceled
+            case s : Success[_] ⇒ callback(s)
+            case e : Failure[_] ⇒ callback(e)
+          }
+        }
+        def cancel(): Unit = f.cancel(true)
+      }
+      f.addListener(l, scheduler)
+      l
+    }
   }
 
   def asNonIdempotent(): AbstractStatement[C, S] = {
@@ -50,14 +66,4 @@ abstract class AbstractStatement[C <: Converter : TypeTag, S <: DriverStatement]
   }
 
   protected def queryString(): String
-
-  private class FutureConverter(promise: Promise[Rows[C]]) extends FutureCallback[ResultSet] {
-    override def onFailure(t: Throwable) {
-      promise.failure(t)
-    }
-
-    override def onSuccess(result: ResultSet) {
-      promise.success(new Rows(result))
-    }
-  }
 }

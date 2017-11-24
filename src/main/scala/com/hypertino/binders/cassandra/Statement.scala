@@ -14,7 +14,7 @@ import scala.reflect.runtime.universe._
 
 class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: BoundStatement)
   extends AbstractStatement[C, BoundStatement](session, boundStatement) with Serializer[C] {
-  import scala.collection.JavaConversions._
+  import scala.collection.JavaConverters._
 
   protected var argIndex = -1
   protected def nextIndex() = {
@@ -48,9 +48,9 @@ class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: 
   def writeBigDecimal(value: BigDecimal) = boundStatement.setDecimal(nextIndex(), value.bigDecimal)
   def writeUUID(value: UUID) = boundStatement.setUUID(nextIndex(), value)
   def writeInetAddress(value: InetAddress) = boundStatement.setInet(nextIndex(), value)
-  def writeList[T: ClassTag](value: List[T]) = boundStatement.setList(nextIndex(), value)
-  def writeSet[T: ClassTag](value: Set[T]) = boundStatement.setSet(nextIndex(), value)
-  def writeMap[K: ClassTag, V: ClassTag](value: Map[K, V]) = boundStatement.setMap(nextIndex(), value)
+  def writeList[T: ClassTag](value: List[T]) = boundStatement.setList(nextIndex(), value.asJava)
+  def writeSet[T: ClassTag](value: Set[T]) = boundStatement.setSet(nextIndex(), value.asJava)
+  def writeMap[K: ClassTag, V: ClassTag](value: Map[K, V]) = boundStatement.setMap(nextIndex(), value.asJava)
 
   class StatementFieldSerializer(val name: String) extends Serializer[C] {
     def fieldName: Option[String] = Some(name)
@@ -70,8 +70,8 @@ class Statement[C <: Converter : TypeTag](session: Session, val boundStatement: 
     def writeBigDecimal(value: BigDecimal) = boundStatement.setDecimal(name, value.bigDecimal)
     def writeUUID(value: UUID) = boundStatement.setUUID(name, value)
     def writeInetAddress(value: InetAddress) = boundStatement.setInet(name, value)
-    def writeList[T: ClassTag](value: List[T]) = boundStatement.setList(name, value)
-    def writeSet[T: ClassTag](value: Set[T]) = boundStatement.setSet(name, value)
-    def writeMap[K: ClassTag, V: ClassTag](value: Map[K, V]) = boundStatement.setMap(name, value)
+    def writeList[T: ClassTag](value: List[T]) = boundStatement.setList(name, value.asJava)
+    def writeSet[T: ClassTag](value: Set[T]) = boundStatement.setSet(name, value.asJava)
+    def writeMap[K: ClassTag, V: ClassTag](value: Map[K, V]) = boundStatement.setMap(name, value.asJava)
   }
 }

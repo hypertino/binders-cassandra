@@ -7,12 +7,12 @@ import scala.reflect.runtime.universe._
 
 class BatchStatement[C <: Converter : TypeTag](session: Session, val batchType: DriverBatchStatement.Type, statements: DriverStatement *)
   extends AbstractStatement[C, DriverBatchStatement](session, new DriverBatchStatement(batchType)) {
-  import scala.collection.JavaConversions._
+  import scala.collection.JavaConverters._
 
-  statement.addAll(statements)
+  statement.addAll(statements.asJava)
 
   override protected def queryString(): String = {
-    val allQueryStrings = statement.getStatements.map {
+    val allQueryStrings = statement.getStatements.asScala.map {
       case b: BoundStatement ⇒ b.preparedStatement().getQueryString
       case s: SimpleStatement ⇒ s.getQueryString
     }

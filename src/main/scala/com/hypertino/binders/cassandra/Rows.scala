@@ -7,13 +7,13 @@ import com.hypertino.inflector.naming.Converter
 import scala.reflect.runtime.universe._
 
 class Rows[C <: Converter : TypeTag](val resultSet: ResultSet) extends Deserializer[C] {
-  import scala.collection.JavaConversions._
+  import scala.collection.JavaConverters._
 
   def fieldName: Option[String] = None
 
   def isNull = false
 
-  def iterator(): Iterator[Row[C]] = resultSet.iterator().map(r => new Row[C](r))
+  def iterator(): Iterator[Row[C]] = resultSet.iterator().asScala.map(r => new Row[C](r))
 
   def wasApplied: Boolean = resultSet.wasApplied()
 }
