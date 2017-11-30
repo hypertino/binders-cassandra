@@ -6,10 +6,12 @@ import com.hypertino.inflector.naming.LowercaseConverter
 import com.hypertino.binders.cassandra._
 import org.cassandraunit.CassandraCQLUnit
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet
+import org.cassandraunit.utils.EmbeddedCassandraServerHelper
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{BeforeAndAfter, Suite}
 
-object Cassandra extends CassandraCQLUnit(new ClassPathCQLDataSet("bindersTest.cql","binders_test"), null, "127.0.0.1", 9142, 60000) {
+object Cassandra extends CassandraCQLUnit(new ClassPathCQLDataSet("bindersTest.cql","binders_test"),
+  EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE, 60000) {
   lazy val start = {
     before()
   }

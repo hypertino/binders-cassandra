@@ -101,20 +101,20 @@ class TestStatementSpec extends FlatSpec with Matchers with CustomMockers {
     val br = new Statement[PlainConverter.type](s, cr)
     br.bind(TestDate(yesterday, Some(now), None))
 
-    verify(cr).setDate("i1", yesterday)
-    verify(cr).setDate("i2", now)
+    verify(cr).setTimestamp("i1", yesterday)
+    verify(cr).setTimestamp("i2", now)
     verify(cr).setToNull("i3")
   }
 
-  "Row " should " bind date parameters " in {
+  "Row " should " bind timestamp parameters " in {
     val s = mock[com.datastax.driver.core.Session]
     val cr = stmt("i1", "i2", "i3")
     val br = new Statement[PlainConverter.type](s, cr)
     br.bindArgs(yesterday, now, null.asInstanceOf[Date])
 
-    verify(cr).setDate(0, yesterday)
-    verify(cr).setDate(1, now)
-    verify(cr).setDate(2, null)
+    verify(cr).setTimestamp(0, yesterday)
+    verify(cr).setTimestamp(1, now)
+    verify(cr).setTimestamp(2, null)
   }
 
   case class TestBoolean(i1: Boolean, i2: Option[Boolean], i3: Option[Boolean])

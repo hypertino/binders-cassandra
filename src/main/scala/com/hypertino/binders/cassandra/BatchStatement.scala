@@ -14,7 +14,7 @@ class BatchStatement[C <: Converter : TypeTag](session: Session, val batchType: 
   override protected def queryString(): String = {
     val allQueryStrings = statement.getStatements.asScala.map {
       case b: BoundStatement ⇒ b.preparedStatement().getQueryString
-      case s: SimpleStatement ⇒ s.getQueryString
+      case s: SimpleStatement ⇒ s.getQueryString()
     }
     s"""
        BEGIN $batchType BATCH

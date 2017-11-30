@@ -1,9 +1,11 @@
-import com.datastax.driver.core.{DataType, ColumnDefinitions}
-import org.hamcrest.{Description, BaseMatcher}
+import com.datastax.driver.core.{CodecRegistry, ColumnDefinitions, DataType}
+import org.hamcrest.{BaseMatcher, Description}
 import org.mockito.{ArgumentMatcher, Matchers}
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
+
+import scala.collection.JavaConverters._
 
 trait CustomMockers extends MockitoSugar {
 
@@ -18,9 +20,9 @@ trait CustomMockers extends MockitoSugar {
     }
 
     val cdClass = classOf[ColumnDefinitions]
-    val cdCtr = cdClass.getDeclaredConstructor(classOf[Array[ColumnDefinitions.Definition]])
+    val cdCtr = cdClass.getDeclaredConstructor(classOf[Array[ColumnDefinitions.Definition]], classOf[CodecRegistry])
     cdCtr.setAccessible(true)
-    val cd = cdCtr.newInstance(list.toArray)
+    val cd = cdCtr.newInstance(list.toArray, CodecRegistry.DEFAULT_INSTANCE)
     cd.asInstanceOf[ColumnDefinitions]
   }
 

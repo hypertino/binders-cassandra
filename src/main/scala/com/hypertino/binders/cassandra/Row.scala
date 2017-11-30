@@ -48,9 +48,9 @@ class FieldDeserializer[C <: Converter : TypeTag](val name: String, val row: com
     row.getLong(name)
   }
 
-  def readDate(): java.util.Date = {
+  def readTimestamp(): java.util.Date = {
     checkNotNull()
-    row.getDate(name)
+    row.getTimestamp(name)
   }
 
   def readBoolean(): Boolean = {
